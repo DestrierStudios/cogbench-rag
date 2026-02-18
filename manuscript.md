@@ -59,7 +59,7 @@ BEIR (Thakur et al., 2021) established the standard for zero-shot retrieval eval
 
 ### 2.3 Cognitive Evaluation of AI Systems
 
-A growing body of work tests whether AI systems replicate human cognitive patterns. Hagendorff et al. (2023) found that GPT-3 exhibits human-like intuitive behaviors on the Cognitive Reflection Test. Koo et al. (2024) benchmarked cognitive biases in LLM evaluation outputs, finding 40% of comparisons exhibited biases. Macmillan-Scott and Musolesi (2025) observed amplified omission bias in LLM moral decision-making. Binz and Schulz (2023) evaluated GPT-3 against human decision heuristics. Suri et al. (2024) investigated anchoring effects in LLMs. Kim et al. (2025) found that reasoning capabilities did not protect against clinical cognitive biases.
+A growing body of work tests whether AI systems replicate human cognitive patterns. Hagendorff et al. (2023) found that GPT-3 exhibits human-like intuitive behaviors on the Cognitive Reflection Test. Koo et al. (2024) benchmarked cognitive biases in LLM evaluation outputs, finding 40% of comparisons exhibited biases. Cheung et al. (2025) observed amplified omission bias in LLM moral decision-making. Binz and Schulz (2023) evaluated GPT-3 against human decision heuristics. Suri et al. (2024) investigated anchoring effects in LLMs. Kim et al. (2025) found that reasoning capabilities did not protect against clinical cognitive biases.
 
 This work has focused on language model generation behavior. CogBench-RAG applies the same approach to the retrieval stage, testing whether systems that supply information to LLMs exhibit their own cognitive patterns.
 
@@ -229,6 +229,8 @@ Chen, J., Lin, H., Han, X., & Sun, L. (2024). Benchmarking large language models
 
 Chen, Y., Yan, L., Sun, W., Ma, X., Zhang, Y., Wang, S., Yin, D., Yang, Y., & Mao, J. (2025). Improving retrieval-augmented generation through multi-agent reinforcement learning. arXiv:2501.15228.
 
+Cheung, V., Maier, M., & Lieder, F. (2025). Large language models show amplified cognitive biases in moral decision-making. *Proceedings of the National Academy of Sciences*, 122(25), e2412015122.
+
 Craik, F.I.M., & Lockhart, R.S. (1972). Levels of processing: A framework for memory research. *Journal of Verbal Learning and Verbal Behavior*, 11(6), 671-684.
 
 Ebbinghaus, H. (1885). *Uber das Gedachtnis*. Leipzig: Duncker & Humblot.
@@ -249,7 +251,7 @@ Godden, D.R., & Baddeley, A.D. (1975). Context-dependent memory in two natural e
 
 Gutierrez, B.J., et al. (2024). HippoRAG: Neurobiologically inspired long-term memory for large language models. In *NeurIPS 2024*.
 
-Hagendorff, T., Fabi, S., & Kosinski, M. (2023). Thinking fast and slow in large language models. *Nature Computational Science*.
+Hagendorff, T., Fabi, S., & Kosinski, M. (2023). Human-like intuitive behavior and reasoning biases emerged in large language models but disappeared in ChatGPT. *Nature Computational Science*, 3(10), 833-838.
 
 Jiang, Z., et al. (2023). Active retrieval augmented generation. In *Proceedings of EMNLP 2023*.
 
@@ -273,7 +275,6 @@ Luecken, M.D., & Theis, F.J. (2019). Current best practices in single-cell RNA-s
 
 Ma, X., et al. (2021). A replication study of dense passage retriever. arXiv:2104.05740.
 
-Macmillan-Scott, O., & Musolesi, M. (2025). LLMs show amplified cognitive biases in moral decision-making. *PNAS*, 122, e2412015122.
 
 Manning, C.D., Raghavan, P., & Schutze, H. (2008). *Introduction to Information Retrieval*. Cambridge University Press.
 
