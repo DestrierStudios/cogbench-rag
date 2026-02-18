@@ -1,0 +1,45 @@
+{
+  "module_name": "fan_effect",
+  "system_name": "dense_minilm",
+  "conditions": {
+    "fan_1": {
+      "mrr": 0.3323412698412699,
+      "recall_at_1": 0.15,
+      "mean_latency_ms": 4.176346050007851,
+      "n_queries": 20
+    },
+    "fan_10": {
+      "mrr": 0.3232142857142858,
+      "recall_at_1": 0.2,
+      "mean_latency_ms": 3.8892562999535585,
+      "n_queries": 60
+    },
+    "fan_2": {
+      "mrr": 0.20637896825396823,
+      "recall_at_1": 0.075,
+      "mean_latency_ms": 4.054471549761729,
+      "n_queries": 40
+    },
+    "fan_5": {
+      "mrr": 0.2585515873015873,
+      "recall_at_1": 0.11666666666666667,
+      "mean_latency_ms": 3.5522281668515157,
+      "n_queries": 60
+    }
+  },
+  "effect_size": -0.19999999999999998,
+  "direction": "null",
+  "cognitive_alignment_score": 0.35,
+  "metadata": {
+    "fan_sizes": [
+      1,
+      2,
+      5,
+      10
+    ],
+    "n_entities_per_fan": 20,
+    "n_total_queries": 180,
+    "n_total_documents": 360
+  },
+  "n_raw_queries": 180
+}

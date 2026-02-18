@@ -1,0 +1,30 @@
+{
+  "module_name": "encoding_specificity",
+  "system_name": "dense_minilm",
+  "conditions": {
+    "context_match": {
+      "mrr": 1.0,
+      "recall_at_1": 1.0,
+      "n_queries": 16
+    },
+    "context_mismatch": {
+      "mrr": 0.41041666666666665,
+      "recall_at_1": 0.0,
+      "n_queries": 16
+    },
+    "unrelated": {
+      "mrr": 0.10119047619047619,
+      "recall_at_1": 0.0,
+      "n_queries": 16
+    }
+  },
+  "effect_size": 0.5895833333333333,
+  "direction": "human_like",
+  "cognitive_alignment_score": 1.0,
+  "metadata": {
+    "n_topics": 8,
+    "n_documents": 16,
+    "n_queries": 48
+  },
+  "n_raw_queries": 48
+}

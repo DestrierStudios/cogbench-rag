@@ -5,31 +5,31 @@
     "fan_1": {
       "mrr": 1.0,
       "recall_at_1": 1.0,
-      "mean_latency_ms": 0.3272737000770576,
+      "mean_latency_ms": 0.31883440005913144,
       "n_queries": 20
     },
     "fan_10": {
-      "mrr": 0.8555555555555556,
-      "recall_at_1": 0.7333333333333333,
-      "mean_latency_ms": 0.18562266680722436,
+      "mrr": 0.8638888888888889,
+      "recall_at_1": 0.75,
+      "mean_latency_ms": 0.08569310020902776,
       "n_queries": 60
     },
     "fan_2": {
-      "mrr": 0.9875,
-      "recall_at_1": 0.975,
-      "mean_latency_ms": 0.17687110012047924,
+      "mrr": 1.0,
+      "recall_at_1": 1.0,
+      "mean_latency_ms": 0.15065777520248957,
       "n_queries": 40
     },
     "fan_5": {
-      "mrr": 0.925,
-      "recall_at_1": 0.85,
-      "mean_latency_ms": 0.22297901671966733,
+      "mrr": 0.9583333333333334,
+      "recall_at_1": 0.9166666666666666,
+      "mean_latency_ms": 0.1001554167487484,
       "n_queries": 60
     }
   },
-  "effect_size": -1.0,
+  "effect_size": -0.9486832980505139,
   "direction": "human_like",
-  "cognitive_alignment_score": 0.65,
+  "cognitive_alignment_score": 0.4871708245126285,
   "metadata": {
     "fan_sizes": [
       1,
