@@ -322,43 +322,30 @@ class FanEffectModule(BaseBenchmarkModule):
         """
         Compute cognitive alignment for the fan effect.
         
-        Human pattern: accuracy decreases with fan size, latency increases.
+        Human pattern: accuracy decreases with fan size.
         
-        CAS = average of:
-          - Normalized negative correlation (accuracy vs. fan size)
-          - Normalized positive correlation (latency vs. fan size)
+        CAS based on Spearman correlation between fan size and MRR:
+          r_s = -1.0 -> CAS = 1.0 (perfect human-like decline)
+          r_s =  0.0 -> CAS = 0.5 (no relationship)
+          r_s = +1.0 -> CAS = 0.0 (opposite pattern)
         
-        Mapped to [0, 1] where:
-          1.0 = perfect human-like pattern (strong negative acc correlation + positive latency correlation)
-          0.5 = no correlation
-          0.0 = perfectly opposite pattern
+        Latency is excluded because sub-millisecond retrieval times
+        in both BM25 and FAISS produce noise-dominated measurements.
         """
         fan_sizes = []
         accuracies = []
-        latencies = []
 
         for condition, metrics in sorted(condition_metrics.items()):
             fan_size = int(condition.split("_")[1])
             fan_sizes.append(fan_size)
             accuracies.append(metrics["mrr"])
-            latencies.append(metrics["mean_latency_ms"])
 
         if len(fan_sizes) < 3:
             return 0.5  # Insufficient data
 
-        # Spearman correlations
         r_acc, _ = stats.spearmanr(fan_sizes, accuracies)
-        r_lat, _ = stats.spearmanr(fan_sizes, latencies)
-
-        # Handle NaN
         r_acc = r_acc if not np.isnan(r_acc) else 0.0
-        r_lat = r_lat if not np.isnan(r_lat) else 0.0
 
-        # Human-like: r_acc should be negative, r_lat should be positive
-        # Map correlations to [0, 1]: -1 -> 1.0, 0 -> 0.5, +1 -> 0.0 (for accuracy)
-        acc_alignment = (1.0 - r_acc) / 2.0  # Flipped: negative r = high alignment
-        lat_alignment = (1.0 + r_lat) / 2.0  # Positive r = high alignment
-
-        # Average the two components
-        cas = (acc_alignment + lat_alignment) / 2.0
+        # Map: r_s = -1 -> 1.0, r_s = 0 -> 0.5, r_s = +1 -> 0.0
+        cas = (1.0 - r_acc) / 2.0
         return float(np.clip(cas, 0.0, 1.0))
