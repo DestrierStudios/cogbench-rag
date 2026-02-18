@@ -230,6 +230,8 @@ class FanEffectModule(BaseBenchmarkModule):
 
     def run(self, system) -> ModuleResult:
         """Execute the fan effect benchmark on a retrieval system."""
+        # Reset seed for reproducibility regardless of execution context
+        np.random.seed(42)
         # Step 1: Generate corpus and queries
         corpus = self.generate_corpus()
         queries = self.generate_queries()

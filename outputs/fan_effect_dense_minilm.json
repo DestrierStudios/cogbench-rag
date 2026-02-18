@@ -3,33 +3,33 @@
   "system_name": "dense_minilm",
   "conditions": {
     "fan_1": {
-      "mrr": 0.4683928571428571,
-      "recall_at_1": 0.3,
-      "mean_latency_ms": 4.127260200220917,
+      "mrr": 0.3451388888888889,
+      "recall_at_1": 0.2,
+      "mean_latency_ms": 3.9258743496247916,
       "n_queries": 20
     },
     "fan_10": {
-      "mrr": 0.23097222222222225,
-      "recall_at_1": 0.08333333333333333,
-      "mean_latency_ms": 3.6393034834873106,
+      "mrr": 0.24512566137566133,
+      "recall_at_1": 0.1,
+      "mean_latency_ms": 4.182837933512928,
       "n_queries": 60
     },
     "fan_2": {
-      "mrr": 0.26828373015873014,
-      "recall_at_1": 0.125,
-      "mean_latency_ms": 3.9799885998945683,
+      "mrr": 0.3008333333333333,
+      "recall_at_1": 0.15,
+      "mean_latency_ms": 3.753655124728539,
       "n_queries": 40
     },
     "fan_5": {
-      "mrr": 0.1596957671957672,
-      "recall_at_1": 0.06666666666666667,
-      "mean_latency_ms": 3.691635600019557,
+      "mrr": 0.16818121693121696,
+      "recall_at_1": 0.05,
+      "mean_latency_ms": 3.809823633370494,
       "n_queries": 60
     }
   },
   "effect_size": -0.7999999999999999,
   "direction": "human_like",
-  "cognitive_alignment_score": 0.44999999999999996,
+  "cognitive_alignment_score": 0.7999999999999999,
   "metadata": {
     "fan_sizes": [
       1,
