@@ -1,0 +1,45 @@
+{
+  "module_name": "fan_effect",
+  "system_name": "bm25",
+  "conditions": {
+    "fan_1": {
+      "mrr": 1.0,
+      "recall_at_1": 1.0,
+      "mean_latency_ms": 0.12264394995327166,
+      "n_queries": 20
+    },
+    "fan_10": {
+      "mrr": 0.9055555555555554,
+      "recall_at_1": 0.8166666666666667,
+      "mean_latency_ms": 0.07129833329599933,
+      "n_queries": 60
+    },
+    "fan_2": {
+      "mrr": 0.9875,
+      "recall_at_1": 0.975,
+      "mean_latency_ms": 0.07087877504545759,
+      "n_queries": 40
+    },
+    "fan_5": {
+      "mrr": 0.9416666666666667,
+      "recall_at_1": 0.8833333333333333,
+      "mean_latency_ms": 0.07117146668254766,
+      "n_queries": 60
+    }
+  },
+  "effect_size": -1.0,
+  "direction": "human_like",
+  "cognitive_alignment_score": 0.7,
+  "metadata": {
+    "fan_sizes": [
+      1,
+      2,
+      5,
+      10
+    ],
+    "n_entities_per_fan": 20,
+    "n_total_queries": 180,
+    "n_total_documents": 360
+  },
+  "n_raw_queries": 180
+}

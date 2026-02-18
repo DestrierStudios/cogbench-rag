@@ -78,39 +78,87 @@ class FanEffectModule(BaseBenchmarkModule):
         self, entity: str, fact_id: str, doc_idx: int, fan_size: int
     ) -> str:
         """
-        Generate a single document about an entity.
-        In production, this would use templates + LLM paraphrasing.
-        This placeholder generates structured text for testing.
+        Generate a single document about an entity with high lexical diversity.
+        Each document uses a unique combination of domain, action verbs,
+        descriptors, and proper nouns to ensure BM25 can discriminate.
         """
+        # Use hash to deterministically select unique word combinations
+        h = hash(fact_id)
+
         domains = [
-            "scientific research", "economic policy", "cultural heritage",
-            "technological innovation", "environmental conservation",
-            "educational reform", "medical advancement", "urban development",
-            "agricultural practice", "diplomatic relations", "legal framework",
-            "artistic expression", "transportation infrastructure",
-            "energy production", "social welfare", "military strategy",
-            "financial regulation", "maritime exploration", "space technology",
-            "linguistic evolution",
+            "quantum computing", "marine biology", "constitutional law",
+            "volcanology", "behavioral economics", "Renaissance sculpture",
+            "antibiotic resistance", "glacial erosion", "jazz improvisation",
+            "orbital mechanics", "textile manufacturing", "coral reef ecology",
+            "cryptographic protocols", "medieval cartography", "gene therapy",
+            "earthquake prediction", "operatic composition", "tidal energy",
+            "ceramic engineering", "forensic entomology",
         ]
-        domain = domains[hash(fact_id) % len(domains)]
+
+        actions = [
+            "pioneered a breakthrough in", "published landmark findings on",
+            "developed a novel framework for", "secured international patents related to",
+            "led a multinational consortium studying", "authored the definitive guide to",
+            "established a research center dedicated to", "won the Fielding Prize for work in",
+            "transformed conventional approaches to", "uncovered critical evidence regarding",
+            "designed the prototype system for", "demonstrated unexpected connections in",
+            "challenged prevailing theories about", "received widespread acclaim for advancing",
+            "organized the first global summit on", "completed a decade-long study of",
+            "introduced computational methods to", "mapped the complete structure of",
+            "trained over two hundred specialists in", "discovered the underlying mechanism of",
+        ]
 
         locations = [
-            "Northern Europe", "Southeast Asia", "Central Africa",
-            "South America", "Eastern Mediterranean", "Pacific Islands",
-            "Central Asia", "Western Caribbean", "Southern Hemisphere",
-            "Arctic Region",
+            "Reykjavik", "Kuala Lumpur", "Nairobi", "Montevideo", "Thessaloniki",
+            "Suva", "Tashkent", "Bridgetown", "Christchurch", "Tromsø",
+            "Cartagena", "Bruges", "Hanoi", "Accra", "Ljubljana",
+            "Muscat", "Quito", "Bergen", "Dakar", "Tallinn",
         ]
-        location = locations[hash(f"{fact_id}_loc") % len(locations)]
+
+        years = [
+            "1987", "1993", "2001", "2006", "2011",
+            "1995", "2003", "2008", "2014", "2018",
+            "1991", "1998", "2005", "2009", "2016",
+            "1989", "1996", "2002", "2012", "2019",
+        ]
+
+        outcomes = [
+            "resulting in three subsequent patents",
+            "which reshaped the field for a generation",
+            "attracting over forty million dollars in funding",
+            "prompting regulatory changes across twelve countries",
+            "earning recognition from the National Academy",
+            "inspiring a wave of follow-up investigations",
+            "leading to commercial applications within five years",
+            "generating over two hundred peer-reviewed citations",
+            "creating a standard adopted by the ISO committee",
+            "establishing a new subdiscipline entirely",
+            "forming the basis of current graduate curricula",
+            "triggering a public debate about ethical guidelines",
+            "saving an estimated fifteen thousand lives annually",
+            "reducing operational costs by thirty-seven percent",
+            "opening previously inaccessible archives to scholars",
+            "resolving a controversy that lasted four decades",
+            "connecting two previously unrelated research programs",
+            "enabling precision measurements at the nanoscale",
+            "producing the largest dataset of its kind",
+            "fundamentally altering clinical treatment protocols",
+        ]
+
+        domain = domains[h % len(domains)]
+        action = actions[(h >> 4) % len(actions)]
+        location = locations[(h >> 8) % len(locations)]
+        year = years[(h >> 12) % len(years)]
+        outcome = outcomes[(h >> 16) % len(outcomes)]
 
         return (
-            f"{entity} is known for its contributions to {domain}. "
-            f"Based in {location}, {entity} has been recognized for "
-            f"achievement {fact_id} in the field of {domain}. "
-            f"This accomplishment, documented as record {fact_id}, "
-            f"represents a significant development in {domain} "
-            f"within the {location} region. Researchers have noted that "
-            f"{entity} played a central role in advancing {domain} "
-            f"through the initiative referenced as {fact_id}."
+            f"In {year}, {entity} {action} {domain} while based at "
+            f"the research institute in {location}. This initiative, "
+            f"catalogued as {fact_id}, focused specifically on {domain} "
+            f"and involved collaboration with specialists in {location}. "
+            f"The work on {fact_id} by {entity} proved significant, "
+            f"{outcome}. Experts in {domain} have since cited the "
+            f"{location} project as a turning point in the discipline."
         )
 
     def generate_queries(self) -> list[dict]:
@@ -140,9 +188,29 @@ class FanEffectModule(BaseBenchmarkModule):
 
             for target_doc in sampled_docs:
                 fact_id = target_doc["metadata"]["fact_id"]
-                query_text = (
-                    f"What is {entity}'s contribution referenced as {fact_id}?"
-                )
+
+                # FAN EFFECT DESIGN: Query uses entity name + domain keyword.
+                # NOT the unique fact_id or long verbatim phrases.
+                # This creates the competition that produces the fan effect:
+                # - Fan=1: only 1 doc about this entity → easy, always rank 1
+                # - Fan=10: 10 docs about this entity, system must use the
+                #   domain keyword to rank the right one highest
+                content = target_doc["content"]
+                # Extract just the domain keyword (e.g., "quantum computing")
+                # It appears after the action verb phrase in our template
+                h = hash(fact_id)
+                domains = [
+                    "quantum computing", "marine biology", "constitutional law",
+                    "volcanology", "behavioral economics", "Renaissance sculpture",
+                    "antibiotic resistance", "glacial erosion", "jazz improvisation",
+                    "orbital mechanics", "textile manufacturing", "coral reef ecology",
+                    "cryptographic protocols", "medieval cartography", "gene therapy",
+                    "earthquake prediction", "operatic composition", "tidal energy",
+                    "ceramic engineering", "forensic entomology",
+                ]
+                domain = domains[h % len(domains)]
+
+                query_text = f"{entity} {domain}"
 
                 queries.append({
                     "query_id": f"fan_q_{query_counter:06d}",
@@ -172,7 +240,8 @@ class FanEffectModule(BaseBenchmarkModule):
 
         # Step 3: Run all queries and collect results
         raw_data = []
-        condition_hits = defaultdict(list)
+        condition_mrrs = defaultdict(list)
+        condition_hits_at_1 = defaultdict(list)
         condition_latencies = defaultdict(list)
 
         for query in queries:
@@ -182,47 +251,51 @@ class FanEffectModule(BaseBenchmarkModule):
                 top_k=self.config.get("top_k", 10),
             )
 
-            hit = self._compute_retrieval_hit(query, result, top_k=10)
             mrr = self._compute_mrr(query, result)
+            hit_at_1 = self._compute_retrieval_hit(query, result, top_k=1)
             fan_size = query["metadata"]["fan_size"]
             condition = query["condition"]
 
-            condition_hits[condition].append(hit)
+            condition_mrrs[condition].append(mrr)
+            condition_hits_at_1[condition].append(hit_at_1)
             condition_latencies[condition].append(result.latency_ms)
 
             raw_data.append({
                 "query_id": query["query_id"],
                 "condition": condition,
                 "fan_size": fan_size,
-                "hit_at_10": hit,
                 "mrr": mrr,
+                "hit_at_1": hit_at_1,
                 "latency_ms": result.latency_ms,
                 "entity": query["metadata"]["entity"],
+                "top_3_doc_ids": [r.doc_id for r in result.results[:3]],
             })
 
         # Step 4: Compute condition-level metrics
         conditions = {}
-        for condition in sorted(condition_hits.keys()):
-            hits = condition_hits[condition]
+        for condition in sorted(condition_mrrs.keys()):
+            mrrs = condition_mrrs[condition]
+            hits = condition_hits_at_1[condition]
             latencies = condition_latencies[condition]
             conditions[condition] = {
-                "recall_at_10": float(np.mean(hits)),
+                "mrr": float(np.mean(mrrs)),
+                "recall_at_1": float(np.mean(hits)),
                 "mean_latency_ms": float(np.mean(latencies)),
-                "n_queries": len(hits),
+                "n_queries": len(mrrs),
             }
 
         # Step 5: Compute cognitive alignment
         alignment = self.compute_alignment_score(conditions)
 
-        # Compute effect size (correlation between fan size and accuracy)
+        # Compute effect size (correlation between fan size and MRR)
         fan_sizes_arr = []
-        accuracies_arr = []
+        mrr_arr = []
         for cond, metrics in conditions.items():
             fan_size = int(cond.split("_")[1])
             fan_sizes_arr.append(fan_size)
-            accuracies_arr.append(metrics["recall_at_10"])
+            mrr_arr.append(metrics["mrr"])
         
-        r, _ = stats.spearmanr(fan_sizes_arr, accuracies_arr)
+        r, _ = stats.spearmanr(fan_sizes_arr, mrr_arr)
         effect_size = float(r) if not np.isnan(r) else 0.0
 
         direction = "human_like" if r < -0.3 else ("opposite" if r > 0.3 else "null")
@@ -265,7 +338,7 @@ class FanEffectModule(BaseBenchmarkModule):
         for condition, metrics in sorted(condition_metrics.items()):
             fan_size = int(condition.split("_")[1])
             fan_sizes.append(fan_size)
-            accuracies.append(metrics["recall_at_10"])
+            accuracies.append(metrics["mrr"])
             latencies.append(metrics["mean_latency_ms"])
 
         if len(fan_sizes) < 3:

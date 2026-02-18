@@ -26,10 +26,10 @@ def main():
     print("Module: Fan Effect | System: BM25")
     print("=" * 60)
 
-    # Small config for quick testing
+    # Small-ish config for quick testing but large enough for meaningful signal
     module_config = {
         "fan_sizes": [1, 2, 5, 10],
-        "n_entities_per_fan": 10,
+        "n_entities_per_fan": 20,
         "n_queries_per_entity": 3,
         "top_k": 10,
     }
@@ -62,7 +62,8 @@ def main():
         fan = condition.split("_")[1]
         print(
             f"  Fan={fan:>2s}  |  "
-            f"Recall@10={metrics['recall_at_10']:.3f}  |  "
+            f"MRR={metrics['mrr']:.3f}  |  "
+            f"Recall@1={metrics['recall_at_1']:.3f}  |  "
             f"Latency={metrics['mean_latency_ms']:.1f}ms  |  "
             f"n={metrics['n_queries']}"
         )
