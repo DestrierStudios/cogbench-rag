@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Smoke test: runs all implemented modules against BM25 and dense retrieval.
+Full benchmark: runs all 5 modules against BM25 and dense retrieval.
 
 Usage:
     python scripts/smoke_test.py
@@ -17,6 +17,8 @@ from src.systems.dense import DenseRetrievalSystem
 from src.modules.fan_effect import FanEffectModule
 from src.modules.encoding_specificity import EncodingSpecificityModule
 from src.modules.interference import InterferenceModule
+from src.modules.serial_position import SerialPositionModule
+from src.modules.retrieval_induced_forgetting import RetrievalInducedForgettingModule
 
 
 def print_header(title):
@@ -25,57 +27,21 @@ def print_header(title):
     print(f"{'=' * 60}")
 
 
-def run_fan_effect(system):
-    config = {
-        "fan_sizes": [1, 2, 5, 10],
-        "n_entities_per_fan": 20,
-        "n_queries_per_entity": 3,
-        "top_k": 10,
-    }
-    module = FanEffectModule(config)
+def run_module(module, system):
     result = module.run(system)
-    for cond, m in sorted(result.conditions.items()):
-        fan = cond.split("_")[1]
-        print(f"  Fan={fan:>2s}  |  MRR={m['mrr']:.3f}  |  R@1={m['recall_at_1']:.3f}  |  n={m['n_queries']}")
+    for cond in sorted(result.conditions.keys()):
+        m = result.conditions[cond]
+        mrr_str = f"MRR={m['mrr']:.3f}" if 'mrr' in m else ""
+        r1_str = f"R@1={m['recall_at_1']:.3f}" if 'recall_at_1' in m else ""
+        n_str = f"n={m['n_queries']}"
+        print(f"  {cond:<20s}  |  {mrr_str:>10s}  {r1_str:>10s}  |  {n_str}")
     print(f"  >> Effect={result.effect_size:.3f}  Dir={result.direction}  CAS={result.cognitive_alignment_score:.3f}")
-    os.makedirs("outputs", exist_ok=True)
-    module.save_results(result, "outputs")
-    return result
-
-
-def run_encoding_specificity(system):
-    module = EncodingSpecificityModule({"n_queries_per_condition": 200})
-    result = module.run(system)
-    for cond in ["context_match", "context_mismatch", "unrelated"]:
-        if cond in result.conditions:
-            m = result.conditions[cond]
-            label = cond.replace("_", " ").title()
-            print(f"  {label:<20s}  |  MRR={m['mrr']:.3f}  |  R@1={m['recall_at_1']:.3f}  |  n={m['n_queries']}")
-    print(f"  >> Effect={result.effect_size:.3f}  Dir={result.direction}  CAS={result.cognitive_alignment_score:.3f}")
-    module.save_results(result, "outputs")
-    return result
-
-
-def run_interference(system):
-    module = InterferenceModule({})
-    result = module.run(system)
-    for cond in ["control_phase1", "control_phase2", "ri_test", "pi_test"]:
-        if cond in result.conditions:
-            m = result.conditions[cond]
-            labels = {
-                "control_phase1": "Control (P1)",
-                "control_phase2": "Control (P2)",
-                "ri_test": "Retroactive Int.",
-                "pi_test": "Proactive Int.",
-            }
-            print(f"  {labels[cond]:<20s}  |  MRR={m['mrr']:.3f}  |  R@1={m['recall_at_1']:.3f}  |  n={m['n_queries']}")
-    print(f"  >> Effect={result.effect_size:.3f}  Dir={result.direction}  CAS={result.cognitive_alignment_score:.3f}")
-    module.save_results(result, "outputs")
     return result
 
 
 def main():
     np.random.seed(42)
+    os.makedirs("outputs", exist_ok=True)
 
     bm25 = BM25System({"k1": 1.5, "b": 0.75})
     dense = DenseRetrievalSystem({
@@ -84,42 +50,66 @@ def main():
         "top_k": 10,
     })
 
-    modules = [
-        ("Fan Effect", run_fan_effect),
-        ("Encoding Specificity", run_encoding_specificity),
-        ("Interference", run_interference),
+    module_specs = [
+        ("Fan Effect", FanEffectModule({
+            "fan_sizes": [1, 2, 5, 10], "n_entities_per_fan": 20,
+            "n_queries_per_entity": 3, "top_k": 10,
+        })),
+        ("Encoding Specificity", EncodingSpecificityModule({"n_queries_per_condition": 200})),
+        ("Interference", InterferenceModule({})),
+        ("Serial Position", SerialPositionModule({})),
+        ("Retrieval-Induced Forgetting", RetrievalInducedForgettingModule({"n_practice_rounds": 3})),
     ]
 
     all_results = {}
 
     for system in [bm25, dense]:
         print_header(f"System: {system.name}")
-        for module_name, run_fn in modules:
+        for module_name, module in module_specs:
             print(f"\n  --- {module_name} ---")
-            result = run_fn(system)
+            result = run_module(module, system)
+            module.save_results(result, "outputs")
             all_results[(system.name, module_name)] = result
 
     # Comparison table
-    print_header("COMPARISON TABLE")
-    print(f"\n  {'Module':<25s}  {'BM25 CAS':>10s}  {'Dense CAS':>10s}  {'BM25':>10s}  {'Dense':>10s}")
-    print(f"  {'-'*25}  {'-'*10}  {'-'*10}  {'-'*10}  {'-'*10}")
-    for module_name, _ in modules:
+    print_header("FULL COMPARISON TABLE")
+    print(f"\n  {'Module':<30s}  {'BM25 CAS':>8s}  {'Dense':>8s}  {'BM25 Dir':>12s}  {'Dense Dir':>12s}")
+    print(f"  {'-'*30}  {'-'*8}  {'-'*8}  {'-'*12}  {'-'*12}")
+    
+    bm25_scores = []
+    dense_scores = []
+    for module_name, _ in module_specs:
         bm = all_results[("bm25", module_name)]
         dn = all_results[("dense_minilm", module_name)]
+        bm25_scores.append(bm.cognitive_alignment_score)
+        dense_scores.append(dn.cognitive_alignment_score)
         print(
-            f"  {module_name:<25s}  "
-            f"{bm.cognitive_alignment_score:>10.3f}  "
-            f"{dn.cognitive_alignment_score:>10.3f}  "
-            f"{bm.direction:>10s}  "
-            f"{dn.direction:>10s}"
+            f"  {module_name:<30s}  "
+            f"{bm.cognitive_alignment_score:>8.3f}  "
+            f"{dn.cognitive_alignment_score:>8.3f}  "
+            f"{bm.direction:>12s}  "
+            f"{dn.direction:>12s}"
         )
 
-    bm25_cas = np.mean([all_results[("bm25", m)].cognitive_alignment_score for m, _ in modules])
-    dense_cas = np.mean([all_results[("dense_minilm", m)].cognitive_alignment_score for m, _ in modules])
-    print(f"\n  BM25 mean CAS:  {bm25_cas:.3f}")
-    print(f"  Dense mean CAS: {dense_cas:.3f}")
+    print(f"\n  {'MEAN CAS':<30s}  {np.mean(bm25_scores):>8.3f}  {np.mean(dense_scores):>8.3f}")
+
+    # Serial position curve detail
+    print_header("SERIAL POSITION CURVES")
+    for sys_name in ["bm25", "dense_minilm"]:
+        r = all_results[(sys_name, "Serial Position")]
+        curve = r.metadata.get("position_curve", {})
+        if curve:
+            print(f"\n  {sys_name}:")
+            positions = sorted(curve.keys())
+            bars = ""
+            for pos in positions:
+                mrr = curve[pos]
+                bar = "█" * int(mrr * 30)
+                bars += f"    Pos {pos:>2d}: {bar} {mrr:.3f}\n"
+            print(bars, end="")
+
     print(f"\n{'=' * 60}")
-    print("  SMOKE TEST PASSED")
+    print("  BENCHMARK COMPLETE — 5 modules × 2 systems")
     print(f"{'=' * 60}")
 
 

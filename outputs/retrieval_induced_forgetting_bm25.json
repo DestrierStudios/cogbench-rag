@@ -1,0 +1,31 @@
+{
+  "module_name": "retrieval_induced_forgetting",
+  "system_name": "bm25",
+  "conditions": {
+    "rif_test": {
+      "mrr": 1.0,
+      "recall_at_1": 1.0,
+      "n_queries": 6
+    },
+    "baseline": {
+      "mrr": 1.0,
+      "recall_at_1": 1.0,
+      "n_queries": 4
+    },
+    "practice": {
+      "mrr": 1.0,
+      "n_queries": 18
+    }
+  },
+  "effect_size": 0.0,
+  "direction": "null",
+  "cognitive_alignment_score": 0.0,
+  "metadata": {
+    "n_categories": 4,
+    "n_practice_rounds": 3,
+    "n_documents": 16,
+    "n_practice_queries": 18,
+    "n_test_queries": 10
+  },
+  "n_raw_queries": 10
+}

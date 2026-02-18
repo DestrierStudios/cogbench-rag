@@ -5,25 +5,25 @@
     "fan_1": {
       "mrr": 1.0,
       "recall_at_1": 1.0,
-      "mean_latency_ms": 0.19177614985892433,
+      "mean_latency_ms": 0.4408172001603816,
       "n_queries": 20
     },
     "fan_10": {
-      "mrr": 0.8138888888888888,
-      "recall_at_1": 0.65,
-      "mean_latency_ms": 0.08689571641298244,
+      "mrr": 0.8833333333333333,
+      "recall_at_1": 0.7666666666666667,
+      "mean_latency_ms": 0.07590328350488562,
       "n_queries": 60
     },
     "fan_2": {
       "mrr": 0.9875,
       "recall_at_1": 0.975,
-      "mean_latency_ms": 0.12314200021137367,
+      "mean_latency_ms": 0.193469375199129,
       "n_queries": 40
     },
     "fan_5": {
-      "mrr": 0.9472222222222222,
-      "recall_at_1": 0.9,
-      "mean_latency_ms": 0.09234073346912434,
+      "mrr": 0.9388888888888888,
+      "recall_at_1": 0.8833333333333333,
+      "mean_latency_ms": 0.11947076670063932,
       "n_queries": 60
     }
   },
