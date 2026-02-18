@@ -1,8 +1,8 @@
 # Do Machines Remember Like We Do? CogBench-RAG: A Cognitive Benchmark for Retrieval-Augmented Generation Systems
 
-Nikhil Saxena^1
+Nikhil Saxena<sup>1</sup>
 
-^1 Northeastern University, Boston, MA, USA
+<sup>1</sup> Northeastern University, Boston, MA, USA
 
 Corresponding author: saxena.ni@northeastern.edu
 
