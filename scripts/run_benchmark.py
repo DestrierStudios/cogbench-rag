@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """
-Full benchmark: runs all 5 modules against BM25 and dense retrieval.
+CogBench-RAG: runs all 5 benchmark modules against BM25 and dense retrieval.
+Produces comparison table, serial position curves, and saves results to outputs/.
 
 Usage:
-    python scripts/smoke_test.py
+    PYTHONHASHSEED=0 python scripts/run_benchmark.py
 """
 
 import sys
