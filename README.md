@@ -2,6 +2,10 @@
 
 A cognitive benchmark for evaluating Retrieval-Augmented Generation systems against established human memory phenomena.
 
+## Project Status
+
+📄 **Under Review** — Submitted to *Behavior Research Methods* (February 2026)
+
 ## Overview
 
 CogBench-RAG tests whether RAG retrieval systems exhibit behavioral patterns documented in human memory research. It evaluates five phenomena:
@@ -108,8 +112,8 @@ If you use CogBench-RAG in your research, please cite:
 
 ```
 Saxena, N. (2026). Do Machines Remember Like We Do? CogBench-RAG: A Cognitive
-Benchmark for Retrieval-Augmented Generation Systems. [Manuscript in preparation].
-Northeastern University.
+Benchmark for Retrieval-Augmented Generation Systems. Manuscript submitted for
+publication in Behavior Research Methods.
 ```
 
 ## License
