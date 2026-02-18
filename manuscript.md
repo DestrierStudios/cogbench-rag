@@ -275,7 +275,6 @@ Luecken, M.D., & Theis, F.J. (2019). Current best practices in single-cell RNA-s
 
 Ma, X., et al. (2021). A replication study of dense passage retriever. arXiv:2104.05740.
 
-
 Manning, C.D., Raghavan, P., & Schutze, H. (2008). *Introduction to Information Retrieval*. Cambridge University Press.
 
 Marian, V., & Neisser, U. (2000). Language-dependent recall of autobiographical memories. *Journal of Experimental Psychology: General*, 129(3), 361-368.
