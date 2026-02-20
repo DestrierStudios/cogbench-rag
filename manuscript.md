@@ -18,7 +18,7 @@ Keywords: retrieval-augmented generation, cognitive science, human memory, bench
 
 ## 1. Introduction
 
-The rapid adoption of Retrieval-Augmented Generation (RAG) has established external retrieval as a primary mechanism for providing large language models with access to knowledge beyond their training data (Lewis et al., 2020). RAG systems are routinely described using memory metaphors: vector databases serve as "long-term memory," retrieval functions as "recall," and the interplay between parametric and non-parametric knowledge mirrors distinctions drawn between semantic and episodic memory systems (Tulving, 1972; Gutierrez et al., 2024). These analogies have practical consequences. Recent systems explicitly draw on neuroscience, with HippoRAG modeling the hippocampal indexing theory of Teyler and Discenna (1986) through knowledge graphs and Personalized PageRank (Gutierrez et al., 2024), EM-LLM implementing surprise-based episodic segmentation from event cognition research (Fountas et al., 2025; Zacks et al., 2007), and ARM incorporating Ebbinghaus-style memory decay and consolidation (Bursa, 2026; Ebbinghaus, 1885).
+The rapid adoption of Retrieval-Augmented Generation (RAG) has established external retrieval as a primary mechanism for providing large language models with access to knowledge beyond their training data (Lewis et al., 2020). RAG systems are routinely described using memory metaphors: vector databases serve as "long-term memory," retrieval functions as "recall," and the interplay between parametric and non-parametric knowledge mirrors distinctions drawn between semantic and episodic memory systems (Tulving, 1972; Gutiérrez et al., 2024). These analogies have practical consequences. Recent systems explicitly draw on neuroscience, with HippoRAG modeling the hippocampal indexing theory of Teyler and Discenna (1986) through knowledge graphs and Personalized PageRank (Gutiérrez et al., 2024), EM-LLM implementing surprise-based episodic segmentation from event cognition research (Fountas et al., 2025; Zacks et al., 2007), and ARM incorporating Ebbinghaus-style memory decay and consolidation (Bursa, 2026; Ebbinghaus, 1885).
 
 Despite this convergence between retrieval system design and cognitive science, an open question persists: do RAG systems actually behave like human memory? The existing literature uses cognitive science as design inspiration for building systems, but no work has systematically used cognitive science as an evaluation framework for understanding them. If retrieval systems exhibit human-like memory biases, practitioners need to anticipate and mitigate them. If they do not, the memory metaphors guiding system design may be misleading.
 
@@ -28,7 +28,7 @@ We introduce CogBench-RAG, a benchmark suite comprising five modules, each groun
 
 1. Encoding specificity (Tulving & Thomson, 1973): retrieval success depends on the match between encoding and retrieval contexts.
 2. The fan effect (Anderson, 1974): retrieval accuracy decreases as the number of facts associated with a concept increases.
-3. Proactive and retroactive interference (Underwood, 1957; Muller & Pilzecker, 1900): prior learning impairs new retrieval (proactive) and new learning impairs retrieval of old information (retroactive).
+3. Proactive and retroactive interference (Underwood, 1957; Müller & Pilzecker, 1900): prior learning impairs new retrieval (proactive) and new learning impairs retrieval of old information (retroactive).
 4. Serial position effects (Murdock, 1962; Ebbinghaus, 1885): items at the beginning and end of a sequence are recalled better than middle items.
 5. Retrieval-induced forgetting (Anderson et al., 1994): practicing retrieval of some items suppresses access to related unpracticed items.
 
@@ -51,7 +51,7 @@ Our contributions are:
 
 RAG was introduced by Lewis et al. (2020), who combined a pre-trained seq2seq model with a dense passage retriever to ground language generation in retrieved evidence. Since then, the approach has diversified. Dense passage retrieval using learned dual-encoder embeddings (Karpukhin et al., 2020) coexists with sparse lexical methods such as BM25 (Robertson & Zaragoza, 2009), hybrid sparse-dense approaches (Ma et al., 2021), and graph-augmented systems (Edge et al., 2024). Iterative retrieval methods such as FLARE (Jiang et al., 2023) trigger retrieval based on generation-time uncertainty, while Self-RAG (Asai et al., 2024) learns when to retrieve and how to critique retrieved passages.
 
-Recent work has moved toward cognitively-inspired architectures. HippoRAG (Gutierrez et al., 2024) mimics the hippocampal memory indexing theory (Teyler & Discenna, 1986) using knowledge graphs and Personalized PageRank. EM-LLM (Fountas et al., 2025) applies surprise-based event segmentation from cognitive models of episodic memory (Zacks et al., 2007; Radvansky & Zacks, 2014). Bursa (2026) introduces Adaptive RAG Memory (ARM), implementing selective remembrance and decay inspired by memory consolidation (McGaugh, 2000). These systems reflect growing interest in cognitive alignment but evaluate success through task performance metrics rather than behavioral correspondence with human memory.
+Recent work has moved toward cognitively-inspired architectures. HippoRAG (Gutiérrez et al., 2024) mimics the hippocampal memory indexing theory (Teyler & Discenna, 1986) using knowledge graphs and Personalized PageRank. EM-LLM (Fountas et al., 2025) applies surprise-based event segmentation from cognitive models of episodic memory (Zacks et al., 2007; Radvansky & Zacks, 2014). Bursa (2026) introduces Adaptive RAG Memory (ARM), implementing selective remembrance and decay inspired by memory consolidation (McGaugh, 2000). These systems reflect growing interest in cognitive alignment but evaluate success through task performance metrics rather than behavioral correspondence with human memory.
 
 ### 2.2 Retrieval Benchmarks
 
@@ -65,7 +65,7 @@ This work has focused on language model generation behavior. CogBench-RAG applie
 
 ### 2.4 Memory and Retrieval in Cognitive Science
 
-The five phenomena we test represent well-established findings in cognitive science. Encoding specificity (Tulving & Thomson, 1973) has been observed across verbal, spatial, and environmental contexts (Godden & Baddeley, 1975; Eich, 1980; Marian & Neisser, 2000). The fan effect (Anderson, 1974) is a core prediction of ACT-R (Anderson et al., 2004; Anderson & Reder, 1999) and has been documented across propositional, spatial, and visual materials (Radvansky et al., 1993). Interference theory has been central to understanding forgetting since Muller and Pilzecker (1900), with the retroactive-exceeds-proactive asymmetry consistently replicated (Wixted, 2004; Kliegl & Bauml, 2021; Postman & Underwood, 1973; McGeoch, 1932). Serial position effects (Murdock, 1962) arise from differential rehearsal (Rundus, 1971) and recency of activation in working memory (Glanzer & Cunitz, 1966; Atkinson & Shiffrin, 1968). Retrieval-induced forgetting (Anderson et al., 1994; Anderson, 2003) has been confirmed via meta-analysis across over 200 experiments (Murayama et al., 2014).
+The five phenomena we test represent well-established findings in cognitive science. Encoding specificity (Tulving & Thomson, 1973) has been observed across verbal, spatial, and environmental contexts (Godden & Baddeley, 1975; Eich, 1980; Marian & Neisser, 2000). The fan effect (Anderson, 1974) is a core prediction of ACT-R (Anderson et al., 2004; Anderson & Reder, 1999) and has been documented across propositional, spatial, and visual materials (Radvansky et al., 1993). Interference theory has been central to understanding forgetting since Müller and Pilzecker (1900), with the retroactive-exceeds-proactive asymmetry consistently replicated (Wixted, 2004; Kliegl & Bäuml, 2021; Postman & Underwood, 1973; McGeoch, 1932). Serial position effects (Murdock, 1962) arise from differential rehearsal (Rundus, 1971) and recency of activation in working memory (Glanzer & Cunitz, 1966; Atkinson & Shiffrin, 1968). Retrieval-induced forgetting (Anderson et al., 1994; Anderson, 2003) has been confirmed via meta-analysis across over 200 experiments (Murayama et al., 2014).
 
 ---
 
@@ -99,7 +99,7 @@ We generate 80 entities, each associated with a controlled number of documents: 
 
 ### 3.5 Module 3: Interference
 
-Interference theory has been central to understanding forgetting since Muller and Pilzecker (1900). Underwood (1957) established proactive interference as an equally important mechanism. The retroactive-exceeds-proactive asymmetry is a consistent finding (Wixted, 2004; Kliegl & Bauml, 2021), and interference is modulated by similarity (McGeoch, 1932; Osgood, 1949).
+Interference theory has been central to understanding forgetting since Müller and Pilzecker (1900). Underwood (1957) established proactive interference as an equally important mechanism. The retroactive-exceeds-proactive asymmetry is a consistent finding (Wixted, 2004; Kliegl & Bäuml, 2021), and interference is modulated by similarity (McGeoch, 1932; Osgood, 1949).
 
 Six entities each have two documents representing sequential phases. Phase 1 documents describe initial activities; Phase 2 documents describe a strategic pivot. Both phases share entity name and general vocabulary but differ in specifics. Four control entities appear in only one phase. Queries use generic shared attributes that both phase documents could plausibly answer, analogous to the A-B, A-C paired-associate paradigm (Barnes & Underwood, 1959). This yields 32 queries.
 
@@ -181,11 +181,11 @@ The distinction carries practical weight. Applications requiring robustness to q
 
 ### 5.3 Implications for Cognitively-Inspired Design
 
-For systems like HippoRAG (Gutierrez et al., 2024) and ARM (Bursa, 2026) that explicitly pursue cognitive alignment, the results have specific implications. Competition-based phenomena appear inherent to similarity-based retrieval and may not require special engineering. If alignment on serial position or RIF is desired, fundamentally different mechanisms, such as position-aware indexing or retrieval-dependent index modification, would likely be needed.
+For systems like HippoRAG (Gutiérrez et al., 2024) and ARM (Bursa, 2026) that explicitly pursue cognitive alignment, the results have specific implications. Competition-based phenomena appear inherent to similarity-based retrieval and may not require special engineering. If alignment on serial position or RIF is desired, fundamentally different mechanisms, such as position-aware indexing or retrieval-dependent index modification, would likely be needed.
 
 ### 5.4 Limitations
 
-Several limitations should be noted. First, the controlled synthetic corpus provides experimental precision but limited ecological validity; naturalistic corpus validation is needed. Second, we evaluate two architectures; hybrid, graph-based (Gutierrez et al., 2024; Edge et al., 2024), and adaptive systems may show different profiles. Third, corpus scale is modest, and scaling effects at realistic knowledge base sizes are unknown. Fourth, CAS normalization involves design choices warranting sensitivity analysis. Fifth, the mapping between cognitive tasks and retrieval tasks is approximate: documents are not episodic memories, and similarity-based ranking is not associative recall. Finally, human behavioral baselines from crowdsourced experiments would strengthen the comparison.
+Several limitations should be noted. First, the controlled synthetic corpus provides experimental precision but limited ecological validity; naturalistic corpus validation is needed. Second, we evaluate two architectures; hybrid, graph-based (Gutiérrez et al., 2024; Edge et al., 2024), and adaptive systems may show different profiles. Third, corpus scale is modest, and scaling effects at realistic knowledge base sizes are unknown. Fourth, CAS normalization involves design choices warranting sensitivity analysis. Fifth, the mapping between cognitive tasks and retrieval tasks is approximate: documents are not episodic memories, and similarity-based ranking is not associative recall. Finally, human behavioral baselines from crowdsourced experiments would strengthen the comparison.
 
 ### 5.5 Future Work
 
@@ -253,7 +253,7 @@ Cheung, V., Maier, M., & Lieder, F. (2025). Large language models show amplified
 
 Craik, F.I.M., & Lockhart, R.S. (1972). Levels of processing: A framework for memory research. *Journal of Verbal Learning and Verbal Behavior*, 11(6), 671-684.
 
-Ebbinghaus, H. (1885). *Uber das Gedachtnis*. Leipzig: Duncker & Humblot.
+Ebbinghaus, H. (1885). *Über das Gedächtnis*. Leipzig: Duncker & Humblot.
 
 Edge, D., Trinh, H., Cheng, N., et al. (2024). From local to global: A graph RAG approach to query-focused summarization. arXiv:2404.16130.
 
@@ -269,13 +269,13 @@ Glanzer, M., & Cunitz, A.R. (1966). Two storage mechanisms in free recall. *Jour
 
 Godden, D.R., & Baddeley, A.D. (1975). Context-dependent memory in two natural environments. *British Journal of Psychology*, 66, 325-331.
 
-Gutierrez, B.J., et al. (2024). HippoRAG: Neurobiologically inspired long-term memory for large language models. In *NeurIPS 2024*.
+Gutiérrez, B.J., et al. (2024). HippoRAG: Neurobiologically inspired long-term memory for large language models. In *NeurIPS 2024*.
 
 Hagendorff, T., Fabi, S., & Kosinski, M. (2023). Human-like intuitive behavior and reasoning biases emerged in large language models but disappeared in ChatGPT. *Nature Computational Science*, 3(10), 833-838.
 
 Jiang, Z., et al. (2023). Active retrieval augmented generation. In *Proceedings of EMNLP 2023*.
 
-Johnson, J., Douze, M., & Jegou, H. (2019). Billion-scale similarity search with GPUs. *IEEE Transactions on Big Data*, 7(3), 535-547.
+Johnson, J., Douze, M., & Jégou, H. (2019). Billion-scale similarity search with GPUs. *IEEE Transactions on Big Data*, 7(3), 535-547.
 
 Kahana, M.J. (2012). *Foundations of Human Memory*. Oxford University Press.
 
@@ -283,7 +283,7 @@ Karpukhin, V., et al. (2020). Dense passage retrieval for open-domain question a
 
 Kim, S.H., et al. (2025). LLM reasoning does not protect against clinical cognitive biases. medRxiv, 2025.06.22.25330078.
 
-Kliegl, O., & Bauml, K.-H.T. (2021). Buildup and release from proactive interference. *Neuroscience & Biobehavioral Reviews*, 120, 264-278.
+Kliegl, O., & Bäuml, K.-H.T. (2021). Buildup and release from proactive interference. *Neuroscience & Biobehavioral Reviews*, 120, 264-278.
 
 Koo, R., et al. (2024). Benchmarking cognitive biases in large language models as evaluators. In *Findings of ACL 2024*, 517-545.
 
@@ -295,7 +295,7 @@ Luecken, M.D., & Theis, F.J. (2019). Current best practices in single-cell RNA-s
 
 Ma, X., et al. (2021). A replication study of dense passage retriever. arXiv:2104.05740.
 
-Manning, C.D., Raghavan, P., & Schutze, H. (2008). *Introduction to Information Retrieval*. Cambridge University Press.
+Manning, C.D., Raghavan, P., & Schütze, H. (2008). *Introduction to Information Retrieval*. Cambridge University Press.
 
 Marian, V., & Neisser, U. (2000). Language-dependent recall of autobiographical memories. *Journal of Experimental Psychology: General*, 129(3), 361-368.
 
@@ -305,7 +305,7 @@ McGaugh, J.L. (2000). Memory: A century of consolidation. *Science*, 287(5451), 
 
 Muennighoff, N., et al. (2022). MTEB: Massive text embedding benchmark. arXiv:2210.07316.
 
-Muller, G.E., & Pilzecker, A. (1900). Experimentelle Beitrage zur Lehre vom Gedachtnis. *Zeitschrift fur Psychologie*, Supplement 1.
+Müller, G.E., & Pilzecker, A. (1900). Experimentelle Beiträge zur Lehre vom Gedächtnis. *Zeitschrift für Psychologie*, Supplement 1.
 
 Murayama, K., Miyatsu, T., Buchli, D., & Storm, B.C. (2014). Forgetting as a consequence of retrieval: A meta-analytic review. *Psychological Bulletin*, 140(5), 1383-1409.
 
