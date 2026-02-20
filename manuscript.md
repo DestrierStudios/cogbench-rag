@@ -199,6 +199,26 @@ We introduced CogBench-RAG, a benchmark suite that evaluates retrieval-augmented
 
 ---
 
+## Declarations
+
+**Funding** Not applicable.
+
+**Conflicts of interest/Competing interests** The author declares no conflicts of interest.
+
+**Ethics approval** Not applicable. No human or animal subjects were involved in this research.
+
+**Consent to participate** Not applicable.
+
+**Consent for publication** Not applicable.
+
+**Availability of data and materials** All data generated during this study are available at https://github.com/DestrierStudios/cogbench-rag.
+
+**Code availability** All benchmark code, figure generation scripts, and Docker configuration are available at https://github.com/DestrierStudios/cogbench-rag under an MIT license.
+
+**Authors' contributions** Not applicable (sole author).
+
+---
+
 ## References
 
 Anderson, J.R. (1974). Retrieval of propositional information from long-term memory. *Cognitive Psychology*, 6, 451-474.
