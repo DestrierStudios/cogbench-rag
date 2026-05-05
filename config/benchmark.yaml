@@ -1,0 +1,151 @@
+# CogBench-RAG Configuration
+# Master config for benchmark execution
+
+project:
+  name: cogbench-rag
+  version: "0.1.0"
+  description: "Cognitive Benchmark for Retrieval-Augmented Generation Systems"
+  output_dir: outputs
+  seed: 42
+  n_bootstrap: 10000
+
+# Corpus settings
+corpus:
+  synthetic:
+    n_documents: 8000
+    doc_length_range: [150, 300]  # words
+    n_entities: 500
+    n_categories: 40
+    members_per_category: 20
+    fan_sizes: [1, 2, 5, 10, 20]
+    output_path: data/synthetic_corpus.jsonl
+  naturalistic:
+    source: wikipedia
+    n_articles: 5000
+    categories:
+      - Science
+      - History
+      - Geography
+      - Arts
+      - Technology
+      - Sports
+      - Politics
+      - Medicine
+      - Law
+      - Economics
+    output_path: data/naturalistic_corpus.jsonl
+
+# RAG systems under test
+systems:
+  bm25:
+    type: sparse
+    engine: rank_bm25
+    params:
+      k1: 1.5
+      b: 0.75
+  
+  dense_minilm:
+    type: dense
+    engine: faiss
+    embedding_model: sentence-transformers/all-MiniLM-L6-v2
+    params:
+      top_k: 10
+  
+  dense_contriever:
+    type: dense
+    engine: faiss
+    embedding_model: facebook/contriever-msmarco
+    params:
+      top_k: 10
+  
+  hybrid:
+    type: hybrid
+    sparse_engine: rank_bm25
+    dense_engine: faiss
+    embedding_model: sentence-transformers/all-MiniLM-L6-v2
+    params:
+      sparse_weight: 0.3
+      dense_weight: 0.7
+      top_k: 10
+
+  hipporag:
+    type: graph
+    engine: hipporag
+    params:
+      llm_model: meta-llama/Llama-3.3-70B-Instruct
+      embedding_model: nvidia/NV-Embed-v2
+      top_k: 10
+
+# Benchmark modules
+modules:
+  encoding_specificity:
+    enabled: true
+    n_queries_per_condition: 200
+    conditions:
+      - context_match
+      - context_mismatch
+      - unrelated_control
+  
+  interference:
+    enabled: true
+    n_queries_per_condition: 200
+    types:
+      - proactive
+      - retroactive
+    similarity_levels: [high, medium, low]
+  
+  serial_position:
+    enabled: true
+    sequence_lengths: [10, 20, 50]
+    n_sequences: 30
+    n_queries_per_position: 20
+  
+  retrieval_induced_forgetting:
+    enabled: true
+    n_categories: 20
+    members_per_category: 10
+    practiced_fraction: 0.5
+    n_practice_rounds: 3
+    n_test_queries: 200
+
+  fan_effect:
+    enabled: true
+    fan_sizes: [1, 2, 5, 10, 20]
+    n_entities_per_fan: 40
+    n_queries_per_entity: 5
+
+  spacing_effect:
+    enabled: true
+    n_target_facts: 100
+    conditions:
+      - massed    # all mentions in one document
+      - spaced_2  # spread across 2 documents
+      - spaced_5  # spread across 5 documents
+
+  testing_effect:
+    enabled: true
+    applicable_systems: [hipporag]  # only systems with feedback loops
+    n_items: 200
+    conditions:
+      - retrieved_then_tested
+      - reexposed_then_tested
+      - baseline
+
+# Evaluation metrics
+evaluation:
+  retrieval_metrics:
+    - recall_at_1
+    - recall_at_5
+    - recall_at_10
+    - ndcg_at_10
+    - mrr
+  
+  latency_metrics:
+    - mean_latency_ms
+    - p95_latency_ms
+  
+  cognitive_alignment:
+    method: borda_count
+    bootstrap_ci: 0.95
+    n_bootstrap: 10000
+    weighting: equal  # or effect_size_weighted

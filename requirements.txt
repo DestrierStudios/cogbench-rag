@@ -1,0 +1,27 @@
+# CogBench-RAG Requirements
+# Core
+numpy>=1.24
+pandas>=2.0
+scipy>=1.11
+scikit-learn>=1.3
+pyyaml>=6.0
+tqdm>=4.65
+jsonlines>=3.1
+
+# Retrieval & embeddings
+sentence-transformers>=2.2
+faiss-cpu>=1.7
+rank-bm25>=0.2
+chromadb>=0.4
+
+# Evaluation & statistics
+statsmodels>=0.14
+pingouin>=0.5
+
+# Corpus generation
+faker>=20.0
+jinja2>=3.1
+
+# Visualization
+matplotlib>=3.7
+seaborn>=0.12
